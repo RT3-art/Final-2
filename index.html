@@ -1,0 +1,195 @@
+<style>
+  .greeting {
+    position: fixed;
+    color: white;
+    font-family: "Gill Sans";
+    font-size: 45px;
+    transform: translate(0px, -130px);
+  }
+
+  body {
+    background: teal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  #mouth {
+    display: inline-block;
+  }
+  
+  .face {
+    position: fixed;
+    color: teal;
+    font-size: 70px;
+    transition: all 1s;
+  }
+
+  .face:hover {
+    transform: rotate(10deg)
+  }
+
+  .circle {
+    position: fixed;
+    background-color: white;
+    height: 190px;
+    width: 190px;
+    border-radius: 50%;
+    z-index: -2
+  }
+
+  .button1 {
+    position: fixed;
+    color: teal;
+    text-align: center;
+    background-color: white;
+    font-family: "Gill Sans";
+    font-size: 30px;
+    height: 50px;
+    width: 250px;
+    border-radius: 10px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(0px, 150px);
+  }
+
+  .button2 {
+    position: fixed;
+    color: teal;
+    text-align: center;
+    background-color: white;
+    font-family: "Gill Sans";
+    font-size: 30px;
+    height: 50px;
+    width: 250px;
+    border-radius: 10px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(0px, 210px);
+  }
+</style>
+
+<div class="greeting">
+  <span id="greeting">Hello</span>
+</div>
+
+<div class="face">
+  <span id="left-eye">●</span>
+  <span id="mouth">⏝</span>
+  <span id="right-eye">●</span>
+</div>
+
+<div class="circle">
+</div>
+
+<div class="button1">
+  <span id="hi">Hi</span>
+</div>
+
+<div class="button2">
+  <span id="bye">Bye</span>
+</div>
+
+
+
+
+
+<script>
+  
+  function browserInfo () {
+
+    const ua = navigator.userAgent
+    let M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []
+    let tem
+    if (/trident/i.test(M[1])) {
+      tem = /\brv[ :]+(\d+)/g.exec(ua) || []
+      return 'IE ' + (tem[1] || '')
+    }
+    if (M[1] === 'Chrome') {
+      tem = ua.match(/\b(OPR|Edge)\/(\d+)/)
+      if (tem !== null) return tem.slice(1).join(' ').replace('OPR', 'Opera')
+    }
+    M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?']
+    if ((tem = ua.match(/version\/(\d+)/i)) !== null) M.splice(1, 1, tem[1])
+    // check for Brave browser
+    if (window.navigator.brave &&
+        window.navigator.brave.isBrave.name === 'isBrave') {
+      M[0] = 'Brave'; M[1] = null
+    }
+    return { name: M[0], version: M[1] }
+  }
+  
+  const lefteye = document.querySelector('#left-eye')
+  const mouth = document.querySelector('#mouth')
+  const righteye = document.querySelector('#right-eye')
+  const button1 = document.querySelector('#hi')
+  const button2 = document.querySelector('#bye')
+
+  function leye() {
+    lefteye.textContent = ">"
+    lefteye.style.fontSize = "69px"
+    setTimeout(() => {
+      lefteye.textContent = "●"
+      lefteye.style.fontSize = "70px"
+    }, 1000)
+  }
+  lefteye.addEventListener('click', leye)
+
+  function reye() {
+    righteye.textContent = "<"
+    righteye.style.fontSize = "69px"
+    setTimeout(() => {
+      righteye.textContent = "●"
+      righteye.style.fontSize = "70px"
+    }, 1000)
+  }
+  righteye.addEventListener('click', reye)
+
+  function UpdateMouth(m) {
+    console.log(browserInfo().name)
+    mouth.textContent = m
+    if (m === "⏝") {
+     mouth.style.fontSize = "70px" 
+    } else if (m === "_") {
+     mouth.style.fontSize = "69px"
+    }
+    if (m === "⏝" && browserInfo().name === "Firefox") {
+      mouth.style.transform = "translateY(60px)"
+    } else {
+      mouth.style.transform = "translateY(0px)"
+    }
+  }
+  
+  function mou() {
+    UpdateMouth("_")
+    setTimeout(() => {
+     UpdateMouth("⏝")
+    }, 1000)
+  }
+  mouth.addEventListener('click', mou)
+  
+  function hi() {
+    button1.textContent = "I'm good!"
+    button2.textContent = "Not so great..."
+    greeting.textContent = "How are you?"
+    UpdateMouth("⏝")
+  }
+
+  button1.addEventListener('click', hi)
+
+  function bye() {
+    button1.textContent = "Wait come back!"
+    button2.textContent = "..."
+    greeting.textContent = ""
+    UpdateMouth("_")
+  }
+
+  button2.addEventListener('click', bye)
+  window.addEventListener('load',() => UpdateMouth("⏝"))
+</script>
